@@ -50,7 +50,8 @@ st.markdown("""
     }
     
     /* Interactive Metric Cards styling to match the AI Studio dashboard cards */
-    div[data-testid="stMetric"] {
+    div[data-testid="stMetric"], [data-testid="stMetric"] {
+        background-color: #0f172a !important;
         background: #0f172a !important;
         border: 1px solid #1e293b !important;
         border-radius: 16px !important;
@@ -59,19 +60,23 @@ st.markdown("""
         transition: all 0.2s ease-in-out;
     }
     
-    div[data-testid="stMetric"]:hover {
+    div[data-testid="stMetric"]:hover, [data-testid="stMetric"]:hover {
         border-color: #334155 !important;
         transform: translateY(-2px);
     }
     
-    div[data-testid="stMetricValue"] {
+    div[data-testid="stMetricValue"], 
+    div[data-testid="stMetricValue"] *, 
+    [data-testid="stMetricValue"] {
         font-size: 32px !important;
         font-weight: 800 !important;
         color: #ffffff !important;
         font-family: 'Inter', -apple-system, sans-serif !important;
     }
     
-    div[data-testid="stMetricLabel"] {
+    div[data-testid="stMetricLabel"], 
+    div[data-testid="stMetricLabel"] *, 
+    [data-testid="stMetricLabel"] {
         color: #94a3b8 !important;
         font-weight: 600 !important;
         font-size: 13px !important;
@@ -166,7 +171,7 @@ close_greater_sma50_w = st.sidebar.number_input("Price > SMA50 Weight", 0, 20, 8
 sales_qoq_w = st.sidebar.number_input("Sales QoQ Growth Weight", 0, 20, 9)
 eps_qoq_w = st.sidebar.number_input("EPS QoQ Growth Weight", 0, 20, 10)
 
-# Real AAPL, NVDA, TSLA fallback datasets matching AI Studio exactly
+# Real AAPL, NVDA, TSLA, META, MSFT, AMZN, PLTR fallback datasets matching AI Studio exactly
 FALLBACK_DATA = {
     "AAPL": {
         "ticker": "AAPL",
@@ -241,6 +246,106 @@ FALLBACK_DATA = {
             {"label": "Q4-24", "eps": 0.85, "revenue": 26.26},
             {"label": "Q1-25", "eps": 0.45, "revenue": 21.30},
             {"label": "Q2-25", "eps": 0.52, "revenue": 25.50}
+        ]
+    },
+    "META": {
+        "ticker": "META",
+        "company_name": "Meta Platforms, Inc.",
+        "prev_close": 581.98,
+        "week52_high": 590.0,
+        "week52_low": 350.0,
+        "shares_outstanding": "445M",
+        "volume": "15.3M",
+        "volume_numeric": 15.3,
+        "relative_strength_value": 92,
+        "sales_QoQ_percent": 28.5,
+        "eps_QoQ_percent": 38.4,
+        "inst_ownership_percent": 74.0,
+        "sma50_value": 550.0,
+        "sma150_value": 510.0,
+        "sma200_value": 480.0,
+        "sma50_percent": 5.8,
+        "sma200_percent": 21.2,
+        "chart_data": [
+            {"label": "Q3-24", "eps": 4.39, "revenue": 40.59},
+            {"label": "Q4-24", "eps": 5.33, "revenue": 44.15},
+            {"label": "Q1-25", "eps": 4.71, "revenue": 36.46},
+            {"label": "Q2-25", "eps": 5.16, "revenue": 39.07}
+        ]
+    },
+    "MSFT": {
+        "ticker": "MSFT",
+        "company_name": "Microsoft Corporation",
+        "prev_close": 415.50,
+        "week52_high": 435.0,
+        "week52_low": 340.0,
+        "shares_outstanding": "7.4B",
+        "volume": "22.5M",
+        "volume_numeric": 22.5,
+        "relative_strength_value": 85,
+        "sales_QoQ_percent": 16.0,
+        "eps_QoQ_percent": 20.0,
+        "inst_ownership_percent": 72.0,
+        "sma50_value": 405.0,
+        "sma150_value": 390.0,
+        "sma200_value": 375.0,
+        "sma50_percent": 2.59,
+        "sma200_percent": 10.8,
+        "chart_data": [
+            {"label": "Q3-24", "eps": 2.99, "revenue": 65.59},
+            {"label": "Q4-24", "eps": 3.30, "revenue": 67.15},
+            {"label": "Q1-25", "eps": 3.12, "revenue": 62.46},
+            {"label": "Q2-25", "eps": 3.28, "revenue": 64.07}
+        ]
+    },
+    "AMZN": {
+        "ticker": "AMZN",
+        "company_name": "Amazon.com, Inc.",
+        "prev_close": 185.20,
+        "week52_high": 195.0,
+        "week52_low": 140.0,
+        "shares_outstanding": "10.4B",
+        "volume": "32.4M",
+        "volume_numeric": 32.4,
+        "relative_strength_value": 88,
+        "sales_QoQ_percent": 12.5,
+        "eps_QoQ_percent": 21.0,
+        "inst_ownership_percent": 61.2,
+        "sma50_value": 178.0,
+        "sma150_value": 168.0,
+        "sma200_value": 155.0,
+        "sma50_percent": 4.04,
+        "sma200_percent": 19.4,
+        "chart_data": [
+            {"label": "Q3-24", "eps": 0.94, "revenue": 143.59},
+            {"label": "Q4-24", "eps": 1.05, "revenue": 145.15},
+            {"label": "Q1-25", "eps": 0.98, "revenue": 139.46},
+            {"label": "Q2-25", "eps": 1.01, "revenue": 142.07}
+        ]
+    },
+    "PLTR": {
+        "ticker": "PLTR",
+        "company_name": "Palantir Technologies Inc.",
+        "prev_close": 22.50,
+        "week52_high": 25.0,
+        "week52_low": 14.50,
+        "shares_outstanding": "2.2B",
+        "volume": "45.2M",
+        "volume_numeric": 45.2,
+        "relative_strength_value": 96,
+        "sales_QoQ_percent": 24.0,
+        "eps_QoQ_percent": 45.0,
+        "inst_ownership_percent": 41.5,
+        "sma50_value": 21.20,
+        "sma150_value": 19.50,
+        "sma200_value": 18.0,
+        "sma50_percent": 6.13,
+        "sma200_percent": 25.0,
+        "chart_data": [
+            {"label": "Q3-24", "eps": 0.08, "revenue": 678.5},
+            {"label": "Q4-24", "eps": 0.09, "revenue": 721.2},
+            {"label": "Q1-25", "eps": 0.08, "revenue": 691.4},
+            {"label": "Q2-25", "eps": 0.10, "revenue": 752.4}
         ]
     }
 }
