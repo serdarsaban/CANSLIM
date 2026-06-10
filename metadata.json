@@ -1,0 +1,6 @@
+{
+  "name": "CANSLIM Stock Screener",
+  "description": "Interactive investment platform to search and rank stocks using the William O'Neil CANSLIM methodology, visualize financial trends, and export report sheets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
