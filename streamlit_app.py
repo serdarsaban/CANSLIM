@@ -20,40 +20,104 @@ st.set_page_config(
 # Custom Styling for Cosmic Slate Dark Theme equivalent
 st.markdown("""
 <style>
-    .reportview-container {
-        background: #0b0f19;
+    /* Global App Container */
+    .stApp {
+        background-color: #0b0f19 !important;
+        color: #f1f5f9 !important;
     }
+    
+    /* Global Header */
+    [data-testid="stHeader"] {
+        background-color: rgba(11, 15, 25, 0.8) !important;
+        backdrop-filter: blur(12px);
+    }
+    
+    /* Sidebar styling */
+    section[data-testid="stSidebar"] {
+        background-color: #0f172a !important;
+        border-right: 1px solid #1e293b !important;
+    }
+    
     .main .block-container {
         padding-top: 2rem;
     }
+    
     h1, h2, h3 {
-        color: #f1f5f9;
-        font-family: 'Inter', sans-serif;
+        color: #ffffff !important;
+        font-family: 'Inter', -apple-system, sans-serif !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.025em !important;
     }
+    
+    /* Interactive Metric Cards styling to match the AI Studio dashboard cards */
+    div[data-testid="stMetric"] {
+        background: #0f172a !important;
+        border: 1px solid #1e293b !important;
+        border-radius: 16px !important;
+        padding: 16px 20px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+        transition: all 0.2s ease-in-out;
+    }
+    
+    div[data-testid="stMetric"]:hover {
+        border-color: #334155 !important;
+        transform: translateY(-2px);
+    }
+    
     div[data-testid="stMetricValue"] {
-        font-size: 24px;
-        font-weight: 900;
-        color: #ffffff;
+        font-size: 32px !important;
+        font-weight: 800 !important;
+        color: #ffffff !important;
+        font-family: 'Inter', -apple-system, sans-serif !important;
     }
+    
     div[data-testid="stMetricLabel"] {
-        color: #94a3b8;
-        font-weight: bold;
+        color: #94a3b8 !important;
+        font-weight: 600 !important;
+        font-size: 13px !important;
+        letter-spacing: 0.05em !important;
+        text-transform: uppercase !important;
     }
+    
+    /* Table modifications for high-contrast presentation */
+    div[data-testid="stTable"] table {
+        background-color: #0f172a !important;
+        color: #e2e8f0 !important;
+        border: 1px solid #1e293b !important;
+        border-radius: 12px !important;
+        overflow: hidden;
+    }
+    
+    div[data-testid="stTable"] th {
+        background-color: #1e293b !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        padding: 12px 16px !important;
+        border-bottom: 2px solid #334155 !important;
+    }
+    
+    div[data-testid="stTable"] td {
+        padding: 12px 16px !important;
+        border-bottom: 1px solid #1e293b !important;
+        color: #cbd5e1 !important;
+    }
+    
+    /* Badges */
     .badge {
         padding: 4px 8px;
-        border-radius: 4px;
-        font-weight: bold;
+        border-radius: 6px;
+        font-weight: 600;
         font-size: 11px;
     }
     .badge-pass {
-        background-color: rgba(16, 185, 129, 0.1);
-        color: #10b981;
-        border: 1px solid rgba(16, 185, 129, 0.2);
+        background-color: rgba(16, 185, 129, 0.15);
+        color: #34d399;
+        border: 1px solid rgba(16, 185, 129, 0.3);
     }
     .badge-fail {
-        background-color: rgba(239, 68, 68, 0.1);
-        color: #ef4444;
-        border: 1px solid rgba(239, 68, 68, 0.2);
+        background-color: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+        border: 1px solid rgba(239, 68, 68, 0.3);
     }
 </style>
 """, unsafe_allow_html=True)
