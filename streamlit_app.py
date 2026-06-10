@@ -56,7 +56,7 @@ st.markdown("""
         border: 1px solid rgba(239, 68, 68, 0.2);
     }
 </style>
-""", unsafe_allowed_html=True)
+""", unsafe_allow_html=True)
 
 st.title("📈 CANSLIM Stock Screener & O'Neil Rule Template")
 st.markdown("Interactive investment screener and dynamic rating generator configured for **Streamlit Cloud** deployment.")
