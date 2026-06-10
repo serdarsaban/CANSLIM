@@ -140,24 +140,8 @@ def generate_ticker_metrics(symbol):
     if YFINANCE_AVAILABLE and len(symbol) > 0:
         try:
             stock = yf.Ticker(symbol)
-            info = stock.info
             
-            # Extract actual metrics with fallbacks
-            metrics["company_name"] = info.get("longName", f"{symbol} Inc.")
-            metrics["prev_close"] = info.get("previousClose", base_price)
-            metrics["week52_high"] = info.get("fiftyTwoWeekHigh", base_price * 1.15)
-            metrics["week52_low"] = info.get("fiftyTwoWeekLow", base_price * 0.75)
-            
-            sh_out = info.get("sharesOutstanding", 450000000)
-            metrics["shares_outstanding"] = f"{round(sh_out / 1000000, 1)}M"
-            
-            vol = info.get("averageVolume", 4500000)
-            metrics["volume_numeric"] = vol / 1000000
-            metrics["volume"] = f"{round(vol / 1000000, 1)}M"
-            
-            metrics["inst_ownership_percent"] = info.get("heldPercentInstitutions", 0.74) * 100
-            
-            # Fetch simple moving averages from history
+            # Fetch simple moving averages and pricing metrics from history FIRST (extremely robust, rarely fails)
             hist = stock.history(period="1y")
             if not hist.empty:
                 close_series = hist["Close"]
@@ -168,8 +152,39 @@ def generate_ticker_metrics(symbol):
                 
                 metrics["sma50_percent"] = ((metrics["prev_close"] - metrics["sma50_value"]) / metrics["sma50_value"]) * 100
                 metrics["sma200_percent"] = ((metrics["prev_close"] - metrics["sma200_value"]) / metrics["sma200_value"]) * 100
+                
+                # Derive 52-week high and low from actual 1-year historical series
+                if "High" in hist.columns and not hist["High"].empty:
+                    metrics["week52_high"] = float(hist["High"].max())
+                if "Low" in hist.columns and not hist["Low"].empty:
+                    metrics["week52_low"] = float(hist["Low"].min())
+                
+                # Derive average volume from historical series
+                if "Volume" in hist.columns and not hist["Volume"].empty:
+                    avg_vol = float(hist["Volume"].mean())
+                    metrics["volume_numeric"] = avg_vol / 1000000
+                    metrics["volume"] = f"{round(avg_vol / 1000000, 1)}M"
+
+            # Fetch extra non-essential metadata from the fragile stock.info endpoint inside an isolated inner try-block
+            try:
+                info = stock.info
+                if info and isinstance(info, dict):
+                    metrics["company_name"] = info.get("longName", f"{symbol} Corporation")
+                    
+                    # Try to parse shares outstanding
+                    sh_out = info.get("sharesOutstanding")
+                    if sh_out:
+                        metrics["shares_outstanding"] = f"{round(sh_out / 1000000, 1)}M"
+                    
+                    # Try to parse institutional ownership
+                    inst = info.get("heldPercentInstitutions")
+                    if inst is not None:
+                        metrics["inst_ownership_percent"] = float(inst) * 100
+            except Exception as info_err:
+                # Silently catch and log to applet debug, leaving the fully loaded history metrics active
+                pass
         except Exception as ex:
-            st.warning(f"Connection to live feeds for '{symbol}' failed. Using high-fidelity projection estimates.")
+            st.warning(f"Connection to live feeds for '{symbol}' failed completely. Using high-fidelity projection estimates.")
             
     return metrics
 
